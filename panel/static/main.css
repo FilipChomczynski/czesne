@@ -1,0 +1,10 @@
+* {
+  font-family: "Helvetica";
+  font-size: large;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}

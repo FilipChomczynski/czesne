@@ -1,0 +1,50 @@
+#container {
+  margin: 1%;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  height: 100%;
+}
+
+#lewy {
+  flex: 1;
+  width: 20%;
+}
+
+#prawy {
+  background-color: #f4f5ff;
+  flex: 3;
+  height: 500%;
+  width: 80%;
+  overflow-y: scroll;
+}
+
+table {
+  width: 100%;
+}
+
+table,
+th,
+td {
+  padding: 0;
+  border-spacing: 0;
+  border: 0.3px solid black;
+}
+
+#dodaj-ucznia {
+  border-radius: 3px;
+  padding: 2%;
+  background-color: #16b8f3;
+  text-decoration: none;
+  color: #f4f5ff;
+}
+
+#wyloguj {
+  border-radius: 3px;
+  padding: 2%;
+  background-color: rgb(226, 61, 61);
+  text-decoration: none;
+  color: #f4f5ff;
+}

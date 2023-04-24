@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <link rel="stylesheet" href="{% static 'main.css' %}" />
+  <link rel="stylesheet" href="{% static 'panel.css' %}" />
+  <body>
+    <div id="container">
+      <main>
+        <div id="lewy">
+          <a href="/panel/dodaj-ucznia" id="dodaj-ucznia">Dodaj ucznia</a>
+
+          <a href="/logout/" id="wyloguj">Wyloguj</a>
+        </div>
+        <div id="prawy">
+          <table>
+            <tr>
+              <th>Imię</th>
+              <th>Nazwisko</th>
+              <th>Email</th>
+              <th>Klasa</th>
+              <th>Czesne</th>
+              <th>Należność</th>
+            </tr>
+            {% for uczen in uczniowie %}
+            <tr>
+              <td>{{uczen.imie}}</td>
+              <td>{{uczen.nazwisko}}</td>
+              <td>{{uczen.email}}</td>
+              <td>{{uczen.klasa}}</td>
+              <td>{{uczen.czesne}}</td>
+              <td>{{uczen.naleznosc}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
