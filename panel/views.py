@@ -1,35 +1,24 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .forms import DodanieUcznia
+from .forms import DodanieUcznia, DodanieStatusu
 from .models import Klasa, Uczen, Czesne
+from django.db.models import Sum
+from .utils import check_login, find_all_tuple
 # Create your views here.
 
 
 def panel(request):
-    zalogowano = request.session.get('zalogowany', False)
-    if not zalogowano:
-        return redirect('/login/')
+    check_login(request)
 
     uczniowie = Uczen.objects.all()
     return render(request, "panel.html", {"uczniowie": uczniowie})
 
 
 def dodaj_ucznia(request):
-    zalogowano = request.session.get('zalogowany', False)
-    if not zalogowano:
-        return redirect("/login/")
+    check_login(request)
 
-    klasy = Klasa.objects.all()
-    wybory_klasa = []
-    for i in klasy:
-        wybory_klasa.append((i.id, i.nazwa))
-    wybory_klasa = tuple(wybory_klasa)
-
-    czesne = Czesne.objects.all()
-    wybory_czesne = []
-    for i in czesne:
-        wybory_czesne.append((i.id, i.nazwa))
-    wybory_czesne = tuple(wybory_czesne)
+    wybory_klasa = find_all_tuple(Klasa)
+    wybory_czesne = find_all_tuple(Czesne)
 
     form = DodanieUcznia(wybory_klasa=wybory_klasa,
                          wybory_czesne=wybory_czesne)
@@ -55,3 +44,22 @@ def dodaj_ucznia(request):
                 return HttpResponse("zle dane")
 
     return render(request, 'dodaj-ucznia.html', {"form": form})
+
+
+def dodaj_status(request):
+    check_login(request)
+
+    uczniowie = Uczen.objects.all()
+    wybory_uczen = []
+    for i in uczniowie:
+        wybory_uczen.append((i.id, i.imie + ' ' + i.nazwisko))
+    wybory_uczen = tuple(wybory_uczen)
+
+    form = DodanieStatusu(wybory_uczen=wybory_uczen)
+
+    if request.method == 'POST':
+        form = DodanieStatusu(request.POST, wybory_uczen=wybory_uczen)
+        if form.is_valid():
+            redirect("/panel/")
+
+    return render(request, 'dodaj-status.html', {"form" : form})

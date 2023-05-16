@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 
 
@@ -28,3 +28,14 @@ class Uczen(models.Model):
 
     def __str__(self):
         return f"{self.imie} {self.nazwisko}"
+    
+class Status(models.Model):
+    tytul = models.CharField(max_length=50)
+    uczen = models.ForeignKey(Uczen, on_delete=models.CASCADE)
+    data = models.DateTimeField(default=timezone.now)
+    kwota = models.FloatField()
+
+    def __str__(self):
+        return f"{self.tytul} {self.kwota}"
+
+    
