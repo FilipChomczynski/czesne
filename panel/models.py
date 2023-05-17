@@ -37,5 +37,3 @@ class Status(models.Model):
 
     def __str__(self):
         return f"{self.tytul} {self.kwota}"
-
-    

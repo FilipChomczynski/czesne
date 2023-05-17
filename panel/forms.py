@@ -25,3 +25,18 @@ class DodanieStatusu(forms.Form):
         wybory_uczen = kwargs.pop('wybory_uczen', ())
         super().__init__(*args, **kwargs)
         self.fields['uczen'].choices = wybory_uczen
+
+class Filter(forms.Form):
+    student = forms.CharField(label="Uczeń", max_length=60)
+    class_ = forms.ChoiceField(label="Klasa", choices=())
+    charge_from = kwota = forms.FloatField(label="Należność od", initial=0)
+    charge_to = forms.FloatField(label="Należność do", initial=0)
+    tuition = forms.ChoiceField(label="Czesne", choices=())
+
+    def __init__(self, *args, **kwargs):
+        student_choices = kwargs.pop('student_choices', ())
+        class_choices = kwargs.pop('class_choices', ())
+        tuition_choices = kwargs.pop('tuition_choices', ())
+        super().__init__(*args, **kwargs)
+        self.fields['class_'].choices = class_choices
+        self.fields['tuition'].choices = tuition_choices

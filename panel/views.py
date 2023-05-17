@@ -1,24 +1,30 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .forms import DodanieUcznia, DodanieStatusu
-from .models import Klasa, Uczen, Czesne
+from .forms import DodanieUcznia, DodanieStatusu, Filter
+from .models import Klasa, Uczen, Czesne, Status
 from django.db.models import Sum
 from .utils import check_login, find_all_tuple
-# Create your views here.
 
 
 def panel(request):
     check_login(request)
 
+    class_ = find_all_tuple(Klasa, ['nazwa'], insert_empty=True)
+    tuition = find_all_tuple(Czesne, ['nazwa'], insert_empty=True)
+    form = Filter(
+        class_choices=class_,
+        tuition_choices=tuition
+    )
+
     uczniowie = Uczen.objects.all()
-    return render(request, "panel.html", {"uczniowie": uczniowie})
+    return render(request, "panel.html", {"uczniowie": uczniowie, "form": form})
 
 
 def dodaj_ucznia(request):
     check_login(request)
 
-    wybory_klasa = find_all_tuple(Klasa)
-    wybory_czesne = find_all_tuple(Czesne)
+    wybory_klasa = find_all_tuple(Klasa, ['nazwa'])
+    wybory_czesne = find_all_tuple(Czesne, ['nazwa'])
 
     form = DodanieUcznia(wybory_klasa=wybory_klasa,
                          wybory_czesne=wybory_czesne)
@@ -49,17 +55,27 @@ def dodaj_ucznia(request):
 def dodaj_status(request):
     check_login(request)
 
-    uczniowie = Uczen.objects.all()
-    wybory_uczen = []
-    for i in uczniowie:
-        wybory_uczen.append((i.id, i.imie + ' ' + i.nazwisko))
-    wybory_uczen = tuple(wybory_uczen)
-
-    form = DodanieStatusu(wybory_uczen=wybory_uczen)
+    student_choices = find_all_tuple(Uczen, ['imie', 'nazwisko'])
+    form = DodanieStatusu(wybory_uczen=student_choices)
 
     if request.method == 'POST':
-        form = DodanieStatusu(request.POST, wybory_uczen=wybory_uczen)
+        form = DodanieStatusu(request.POST, wybory_uczen=student_choices)
         if form.is_valid():
-            redirect("/panel/")
+            student = Uczen.objects.filter(
+                id=int(form.cleaned_data['uczen'])).first()
 
-    return render(request, 'dodaj-status.html', {"form" : form})
+            status = Status(
+                tytul=form.cleaned_data['tytul'],
+                uczen=student,
+                kwota=form.cleaned_data['kwota']
+            )
+
+            try:
+                status.save()
+            except:
+                return HttpResponse("zle dane")
+
+            student.naleznosc += status.kwota
+            student.save()
+
+    return render(request, 'dodaj-status.html', {"form": form})

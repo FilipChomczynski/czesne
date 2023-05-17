@@ -1,13 +1,23 @@
 from django.shortcuts import redirect
 
+
 def check_login(request):
-    zalogowano = request.session.get('zalogowany', False)
-    if not zalogowano:
+    logged = request.session.get('zalogowany', False)
+    if not logged:
         return redirect("/login/")
-    
-def find_all_tuple(Model):
-    all_objects = Model.objects.all()
+
+
+def find_all_tuple(model, fields, insert_empty=False):
+    all_objects = model.objects.all()
     choices = []
-    for i in all_objects:
-        choices.append((i.id, i.nazwa))
+
+    for obj in all_objects:
+        values = []
+        for field in range(len(fields)):
+            values.append(getattr(obj, fields[field]))
+        choices.append((obj.id, ' '.join(values)))
+
+    if insert_empty:
+        choices.insert(0, ("none", "(żaden)"))
+
     return tuple(choices)
