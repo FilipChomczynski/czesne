@@ -17,7 +17,7 @@
           <a href="/panel/dodaj-status" id="dodaj-ucznia">Dodaj Status</a>
           <a href="/logout/" id="wyloguj">Wyloguj</a>
 
-          <form action="/panel/filter" method="post">
+          <form action="/panel/" method="post">
             {% csrf_token %} {{ form }}
             <input type="submit" value="Szukaj" />
           </form>
