@@ -1,9 +1,6 @@
 import time
 from django.shortcuts import redirect
 from .models import Uczen, Status, Czesne
-from apscheduler.schedulers.blocking import BlockingScheduler
-from celery.schedules import crontab
-from celery.task import periodic_task
 
 
 def check_login(request):
@@ -28,7 +25,6 @@ def find_all_tuple(model, fields, insert_empty=False):
     return tuple(choices)
 
 
-@periodic_task(run_every=crontab(hour=0, minute=0, seconds=1))
 def add_status_every_month():
     students = Uczen.objects.all()
     for student in students:
