@@ -1,13 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from .forms import DodanieUcznia, DodanieStatusu, Filter
+from .forms import DodanieUcznia, DodanieStatusu, Filter, StatusFilter
 from .models import Klasa, Uczen, Czesne, Status
 from .utils import check_login, find_all_tuple
 from django.db.models import Q
 
 
 def panel(request):
-    # check_login(request)
     if request.session.get('zalogowany') is None:
         return redirect("/login/")
 
@@ -52,6 +51,23 @@ def panel(request):
     return render(request, "panel.html", {"uczniowie": students, "form": form, "statuses": statuses})
 
 
+def status_filter(request):
+    if request.method == "POST":
+        form = StatusFilter(request.POST)
+        if form.is_valid():
+            statuses = Status.objecs.all()
+            if form.cleaned_data['student'] != '':
+                try:
+                    students = statuses\
+                        .filter(imie=form.cleaned_data['student'].split()[0])\
+                        .filter(nazwisko=form.cleaned_data['student'].split()[1])
+                except IndexError:
+                    students = students\
+                        .filter(Q(imie=form.cleaned_data['student'].split()[0]) | Q(nazwisko=form.cleaned_data['student'].split()[0]))
+
+    return redirect("/panel/")
+
+
 def dodaj_ucznia(request):
     if request.session.get('zalogowany') is None:
         return redirect("/login/")
@@ -75,7 +91,8 @@ def dodaj_ucznia(request):
                 nazwisko=form.cleaned_data['nazwisko'],
                 email=form.cleaned_data['email'],
                 klasa=klasa,
-                czesne=czesne
+                czesne=czesne,
+                naleznosc=int(form.cleaned_data['naleznosc'])
             )
             try:
                 uczen.save()

@@ -11,20 +11,19 @@
 <body>
   <script src="{% static 'panel.js' %}" defer></script>
     <main class="columns" id="container">
-      <div id="lewy" class="column is-one-fifth">
+      <div id="lewy" class="column is-one-quarter">
         <a href="/panel/dodaj-ucznia/" class="button is-primary">Dodaj Ucznia</a>
         <a href="/panel/dodaj-status/" class="button is-primary">Dodaj Status</a>
-        <a href="/logout/"  class="button is-danger" >Wyloguj</a>
         <br>
         <button onclick="changeData(this)" class="button is-info mt-5 mb-4">Status</button>
-
+        <a href="/logout/"  class="button is-danger mt-5 mb-4 ml-6" id="logout" >Wyloguj</a>
         <form action="/panel/" method="post">
           <h3 class="subtitle is-3 mb-1">Filtry</h3>
           {% csrf_token %} {{ form }}
           <input type="submit" value="Szukaj" class="button is-success mt-5" />
         </form>
       </div>
-      <div id="prawy" class="box column is-four-fifths">
+      <div id="prawy" class="box column is-three-quarters">
         <div id="students-table">
           <table class="table is-striped">
             <tr>
@@ -48,7 +47,7 @@
           </table>
         </div>
 
-        <div id="status-table" class="disabled-table">
+        <div id="status-table" class="disabled">
           <table class="table is-striped">
             <tr>
               <th>Imię</th>

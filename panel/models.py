@@ -33,7 +33,7 @@ class Uczen(models.Model):
 class Status(models.Model):
     tytul = models.CharField(max_length=50)
     uczen = models.ForeignKey(Uczen, on_delete=models.CASCADE)
-    data = models.DateTimeField(default=timezone.now)
+    data = models.DateField(default=timezone.now)
     kwota = models.FloatField()
 
     def __str__(self):

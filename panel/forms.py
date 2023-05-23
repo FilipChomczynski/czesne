@@ -24,7 +24,7 @@ class DodanieStatusu(forms.Form):
     uczen = forms.ChoiceField(label="Uczeń", choices=())
     kwota = forms.FloatField(label="Kwota", initial=0)
     description = forms.CharField(label="Opis")
-    data = forms.DateTimeField(label="Data", initial=now)
+    data = forms.DateField(label="Data", initial=now)
 
     def __init__(self, *args, **kwargs):
         wybory_uczen = kwargs.pop('wybory_uczen', ())
@@ -48,5 +48,17 @@ class Filter(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['class_'].choices = class_choices
         self.fields['tuition'].choices = tuition_choices
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'
+
+
+class StatusFilter(forms.Form):
+    student = forms.CharField(label="Uczeń", max_length=60, required=False)
+    amount = forms.FloatField(label="Kwota", required=False)
+    date_from = forms.DateField(label="Data od", required=False)
+    date_to = forms.DateField(label="Data do", required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'input'
