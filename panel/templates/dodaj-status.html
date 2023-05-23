@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -7,14 +6,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Dodaj status</title>
 	<link rel="stylesheet" href="{% static 'main.css' %}" />
+    <link rel="stylesheet" href="{% static 'add-status.css' %}" />
 </head>
 <body>
-	  <main>
-      <h1>Dodaj Status</h1>
-      <form action="/panel/dodaj-status/" method="post">
-        {% csrf_token %} {{ form }}
-        <input type="submit" value="Dodaj" />
-      </form>
+
+    <main class="columns">
+        <a href="/panel/" id="panel-btn" class="button is-info">Powrót do panelu</a>
+        <div class="column"></div>
+        <div class="column">
+            <h1 class="title is-2 mt-6 mb-6 has-text-centered">Dodaj Status</h1>
+            <div class="box ">
+                <form action="/panel/dodaj-status/" method="post">
+                    {% csrf_token %} {{ form }}
+                    <input type="submit" value="Dodaj" class="button is-success mt-5"/>
+                    <input type="reset" value="Wyczyść" class="button is-danger mt-5 ml-4"/>
+                </form>
+            </div>
+        </div>
+        <div class="column"></div>
     </main>
 </body>
 </html>

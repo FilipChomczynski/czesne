@@ -1,10 +1,11 @@
 import time
 from django.shortcuts import redirect
 
-
+# Fix
 def check_login(request):
-    logged = request.session.get('zalogowany', False)
-    if not logged:
+    logged = request.session.get('zalogowany')
+    print(logged is None)
+    if logged is None:
         return redirect("/login/")
 
 

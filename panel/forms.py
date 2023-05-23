@@ -16,6 +16,8 @@ class DodanieUcznia(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['klasa'].choices = wybory_klasa
         self.fields['czesne'].choices = wybory_czesne
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'
 
 
 class DodanieStatusu(forms.Form):
@@ -28,6 +30,8 @@ class DodanieStatusu(forms.Form):
         wybory_uczen = kwargs.pop('wybory_uczen', ())
         super().__init__(*args, **kwargs)
         self.fields['uczen'].choices = wybory_uczen
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'
 
 
 class Filter(forms.Form):
@@ -44,3 +48,5 @@ class Filter(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['class_'].choices = class_choices
         self.fields['tuition'].choices = tuition_choices
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'

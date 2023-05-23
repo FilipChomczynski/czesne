@@ -1,50 +1,24 @@
-#container {
-	margin: 1%;
-	height: 100%;
-}
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
-main {
-	display: flex;
-	height: 100%;
-}
-
-#lewy {
-	flex: 1;
-	width: 20%;
-}
-
-#prawy {
-	background-color: #f4f5ff;
-	flex: 3;
-	height: 500%;
-	width: 80%;
-	overflow-y: scroll;
+body {
+    height: 100vh;
+    overflow: auto
 }
 
 table {
 	width: 100%;
 }
 
-table,
-th,
-td {
-	padding: 0;
-	border-spacing: 0;
-	border: 0.3px solid black;
+.disabled-table {
+    display: none;
 }
 
-#dodaj-ucznia {
-	border-radius: 3px;
-	padding: 2%;
-	background-color: #16b8f3;
-	text-decoration: none;
-	color: #f4f5ff;
+form {
+  width: 80%;
 }
 
-#wyloguj {
-	border-radius: 3px;
-	padding: 2%;
-	background-color: rgb(226, 61, 61);
-	text-decoration: none;
-	color: #f4f5ff;
+#logout {
+    position: absolute;
+    bottom: 5%;
+    left: 1%;
 }

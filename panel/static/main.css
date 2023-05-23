@@ -1,9 +1,10 @@
-* {
-	font-family: 'Helvetica';
+html, body {
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
-html,
-body {
-	margin: 0;
-	height: 100%;
-	overflow: hidden;
+
+* {
+    margin: 0;
+    padding: 0;
 }

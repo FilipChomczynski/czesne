@@ -1,21 +1,29 @@
 {% load static %}
-<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Dodaj ucznia</title>
-	<link rel="stylesheet" href="{% static 'main.css' %}" />
-  <link rel="stylesheet" href="{% static 'dodaj-ucznia.css' %}" />
+    <link rel="stylesheet" href="{% static 'dodaj-ucznia.css' %}" />
 </head>
   <body>
-    <main>
-      <h1>Dodaj ucznia</h1>
-      <form action="/panel/dodaj-ucznia/" method="post">
-        {% csrf_token %} {{ form }}
-        <input type="submit" value="Dodaj" />
-      </form>
+    <script src="{% static 'panel.js' %}"></script>
+    <main class="columns">
+        <a href="/panel/" id="panel-btn" class="button is-info">Powrót do panelu</a>
+        <div class="column"></div>
+        <div class="column">
+            <h1 class="title is-2 mt-6 mb-6 has-text-centered">Dodaj ucznia</h1>
+            <div class="box ">
+                <form action="/panel/dodaj-ucznia/" name="add-student-form" method="post" class="form">
+                    {% csrf_token %} {{ form }}
+<!--                    <input type="submit" value="Dodaj" />-->
+                    <button class="button is-success mt-5" onclick="submitForm()">Dodaj</button>
+                    <input type="reset" value="Wyczyść" class="button is-danger mt-5 ml-4"/>
+                </form>
+            </div>
+        </div>
+        <div class="column"></div>
     </main>
   </body>
 </html>

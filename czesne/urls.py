@@ -22,3 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('panel/', include("panel.urls"))
 ]
+
+handler404 = "czesne.views.page_not_found_view"

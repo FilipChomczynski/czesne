@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html>
   <head>
 	<meta charset="UTF-8">
@@ -7,13 +6,21 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Logowanie</title>
 	<link rel="stylesheet" href="{% static 'main.css' %}" />
+	<link rel="stylesheet" href="{% static 'login.css' %}" />
   </head>
   <body>
-    <h1>Logowanie</h1>
-
-    <form action="/login/" method="post">
-      {% csrf_token %} {{ form }}
-      <input type="submit" value="Zaloguj" />
-    </form>
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column">
+            <h1 class="title is-1 has-text-centered mt-6 mb-6">Logowanie</h1>
+            <div class="box ">
+                <form action="/login/" method="post" class="form">
+                {% csrf_token %} {{ form }}
+                <input type="submit" value="Zaloguj" class="button is-success mt-5" />
+                </form>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
   </body>
 </html>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 from celery.schedules import crontab
 try:
     from panel.tasks import add_status_every_month
@@ -32,7 +33,8 @@ SECRET_KEY = 'django-insecure-+8w4+g*)mh(fphc4bdcm*u1ag2&r4=s_s1*=yj&m3qxui%3ww)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

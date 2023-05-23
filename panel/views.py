@@ -7,9 +7,12 @@ from django.db.models import Q
 
 
 def panel(request):
-    check_login(request)
+    # check_login(request)
+    if request.session.get('zalogowany') is None:
+        return redirect("/login/")
 
     students = Uczen.objects.all()
+    statuses = Status.objects.all()
 
     class_ = find_all_tuple(Klasa, ['nazwa'], insert_empty=True)
     tuition = find_all_tuple(Czesne, ['nazwa'], insert_empty=True)
@@ -46,11 +49,12 @@ def panel(request):
             if form.cleaned_data['tuition'] != '-1':
                 students = students.filter(czesne=form.cleaned_data['tuition'])
 
-    return render(request, "panel.html", {"uczniowie": students, "form": form})
+    return render(request, "panel.html", {"uczniowie": students, "form": form, "statuses": statuses})
 
 
 def dodaj_ucznia(request):
-    check_login(request)
+    if request.session.get('zalogowany') is None:
+        return redirect("/login/")
 
     wybory_klasa = find_all_tuple(Klasa, ['nazwa'])
     wybory_czesne = find_all_tuple(Czesne, ['nazwa'])
@@ -82,7 +86,8 @@ def dodaj_ucznia(request):
 
 
 def dodaj_status(request):
-    check_login(request)
+    if request.session.get('zalogowany') is None:
+        return redirect("/login/")
 
     student_choices = find_all_tuple(Uczen, ['imie', 'nazwisko'])
     form = DodanieStatusu(wybory_uczen=student_choices)
@@ -108,7 +113,3 @@ def dodaj_status(request):
             student.save()
 
     return render(request, 'dodaj-status.html', {"form": form})
-
-
-
-

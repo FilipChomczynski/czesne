@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -9,21 +8,25 @@
 	<link rel="stylesheet" href="{% static 'main.css' %}" />
   <link rel="stylesheet" href="{% static 'panel.css' %}" />
 </head>
-  <body>
-    <div id="container">
-      <main>
-        <div id="lewy">
-          <a href="/panel/dodaj-ucznia" id="dodaj-ucznia">Dodaj Ucznia</a>
-          <a href="/panel/dodaj-status" id="dodaj-ucznia">Dodaj Status</a>
-          <a href="/logout/" id="wyloguj">Wyloguj</a>
+<body>
+  <script src="{% static 'panel.js' %}" defer></script>
+    <main class="columns" id="container">
+      <div id="lewy" class="column is-one-fifth">
+        <a href="/panel/dodaj-ucznia/" class="button is-primary">Dodaj Ucznia</a>
+        <a href="/panel/dodaj-status/" class="button is-primary">Dodaj Status</a>
+        <a href="/logout/"  class="button is-danger" >Wyloguj</a>
+        <br>
+        <button onclick="changeData(this)" class="button is-info mt-5 mb-4">Status</button>
 
-          <form action="/panel/" method="post">
-            {% csrf_token %} {{ form }}
-            <input type="submit" value="Szukaj" />
-          </form>
-        </div>
-        <div id="prawy">
-          <table>
+        <form action="/panel/" method="post">
+          <h3 class="subtitle is-3 mb-1">Filtry</h3>
+          {% csrf_token %} {{ form }}
+          <input type="submit" value="Szukaj" class="button is-success mt-5" />
+        </form>
+      </div>
+      <div id="prawy" class="box column is-four-fifths">
+        <div id="students-table">
+          <table class="table is-striped">
             <tr>
               <th>Imię</th>
               <th>Nazwisko</th>
@@ -44,7 +47,28 @@
             {% endfor %}
           </table>
         </div>
-      </main>
-    </div>
-  </body>
+
+        <div id="status-table" class="disabled-table">
+          <table class="table is-striped">
+            <tr>
+              <th>Imię</th>
+              <th>Nazwisko</th>
+              <th>Opis</th>
+              <th>Kwota</th>
+              <th>Data</th>
+            </tr>
+            {% for status in statuses %}
+                <tr>
+                  <td>{{status.uczen.imie}}</td>
+                  <td>{{status.uczen.nazwisko}}</td>
+                  <td>{{status.tytul}}</td>
+                  <td>{{status.kwota}}</td>
+                  <td>{{status.data}}</td>
+                </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </main>
+</body>
 </html>
