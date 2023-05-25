@@ -17,9 +17,15 @@
         <br>
         <button onclick="changeData(this)" class="button is-info mt-5 mb-4">Status</button>
         <a href="/logout/"  class="button is-danger mt-5 mb-4 ml-6" id="logout" >Wyloguj</a>
-        <form action="/panel/" method="post">
-          <h3 class="subtitle is-3 mb-1">Filtry</h3>
-          {% csrf_token %} {{ form }}
+        <form action="/panel/" method="post" id="students-form">
+          <h3 class="subtitle is-3 mb-1">Filtry uczeń</h3>
+          {% csrf_token %} {{ form_student }}
+          <input type="submit" value="Szukaj" class="button is-success mt-5" />
+        </form>
+
+        <form action="/panel/status/" method="post" id="status-form" class="disabled">
+          <h3 class="subtitle is-3 mb-1">Filtry status</h3>
+          {% csrf_token %} {{ form_status }}
           <input type="submit" value="Szukaj" class="button is-success mt-5" />
         </form>
       </div>

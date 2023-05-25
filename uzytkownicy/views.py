@@ -1,15 +1,13 @@
-from django import template
-from django.template import loader
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import logout as logout_user
-from panel.utils import check_login
 from . import forms
 
 
 def index(request):
-    check_login(request)
+    if request.session.get('zalogowany') is None:
+        return redirect("/login/")
 
     return redirect('panel/')
 

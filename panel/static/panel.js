@@ -1,10 +1,15 @@
+const elementsToDisable = [
+    document.querySelector("#students-table"),
+    document.querySelector("#status-table"),
+    document.querySelector("#students-form"),
+    document.querySelector("#status-form")]
+
 function changeData(event) {
     const btnText = event;
-    const status = document.querySelector("#students-table");
-    const students = document.querySelector("#status-table");
 
-    status.classList.toggle("disabled");
-    students.classList.toggle("disabled");
+    elementsToDisable.forEach(element=>{
+        element.classList.toggle("disabled");
+    })
 
     btnText.innerText = btnText.innerText == "Uczniowie" ? "Status": "Uczniowie";
 }

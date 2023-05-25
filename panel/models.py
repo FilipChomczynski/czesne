@@ -42,4 +42,7 @@ class Status(models.Model):
 
 class Settings(models.Model):
     email = models.EmailField()
-    day_of_adding_statuses = models.CharField(max_length=2)
+    email_subject = models.CharField(max_length=80)
+    email_content = models.CharField(max_length=600)
+    day_of_sending_email = models.CharField(max_length=2, default=1)
+    day_of_adding_statuses = models.CharField(max_length=2, default=1)

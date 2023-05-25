@@ -42,7 +42,6 @@ class Filter(forms.Form):
     tuition = forms.ChoiceField(label="Czesne", choices=())
 
     def __init__(self, *args, **kwargs):
-        student_choices = kwargs.pop('student_choices', ())
         class_choices = kwargs.pop('class_choices', ())
         tuition_choices = kwargs.pop('tuition_choices', ())
         super().__init__(*args, **kwargs)
@@ -54,7 +53,8 @@ class Filter(forms.Form):
 
 class StatusFilter(forms.Form):
     student = forms.CharField(label="Uczeń", max_length=60, required=False)
-    amount = forms.FloatField(label="Kwota", required=False)
+    amount_from = forms.FloatField(label="Kwota od", required=False)
+    amount_to = forms.FloatField(label="Kwota do", required=False)
     date_from = forms.DateField(label="Data od", required=False)
     date_to = forms.DateField(label="Data do", required=False)
 

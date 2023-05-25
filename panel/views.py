@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import DodanieUcznia, DodanieStatusu, Filter, StatusFilter
 from .models import Klasa, Uczen, Czesne, Status
-from .utils import check_login, find_all_tuple
+from .utils import find_all_tuple
 from django.db.models import Q
 
 
@@ -19,6 +19,7 @@ def panel(request):
         class_choices=class_,
         tuition_choices=tuition
     )
+    form_status = StatusFilter()
 
     if request.method == 'POST':
         form = Filter(
@@ -48,24 +49,49 @@ def panel(request):
             if form.cleaned_data['tuition'] != '-1':
                 students = students.filter(czesne=form.cleaned_data['tuition'])
 
-    return render(request, "panel.html", {"uczniowie": students, "form": form, "statuses": statuses})
+    return render(request, "panel.html", {
+        "uczniowie": students,
+        "form_student": form,
+        "statuses": statuses,
+        "form_status": form_status
+    })
 
 
 def status_filter(request):
     if request.method == "POST":
-        form = StatusFilter(request.POST)
-        if form.is_valid():
-            statuses = Status.objecs.all()
-            if form.cleaned_data['student'] != '':
-                try:
-                    students = statuses\
-                        .filter(imie=form.cleaned_data['student'].split()[0])\
-                        .filter(nazwisko=form.cleaned_data['student'].split()[1])
-                except IndexError:
-                    students = students\
-                        .filter(Q(imie=form.cleaned_data['student'].split()[0]) | Q(nazwisko=form.cleaned_data['student'].split()[0]))
+        statuses = Status.objects.all()
+        form_status = StatusFilter(request.POST)
+        class_ = find_all_tuple(Klasa, ['nazwa'], insert_empty=True)
+        tuition = find_all_tuple(Czesne, ['nazwa'], insert_empty=True)
+        form_student = Filter(
+            class_choices=class_,
+            tuition_choices=tuition
+        )
+        if form_status.is_valid():
+            # if form.cleaned_data['student'] != '':
+            #     students = None
+            #     try:
+            #         students = Uczen.objects.filter(
+            #             imie=form.cleaned_data['student'].split()[0],
+            #             nazwisko=form.cleaned_data['student'].split()[1]
+            #         )
+            #     except IndexError:
+            #         students = students\
+            #             .filter(Q(imie=form.cleaned_data['student'].split()[0]) |
+            #                     Q(nazwisko=form.cleaned_data['student'].split()[0])
+            #                     )
 
-    return redirect("/panel/")
+            if form_status.cleaned_data['amount_from'] is not None:
+                statuses = statuses.filter(kwota__gte=form_status.cleaned_data['amount_from'])
+            if form_status.cleaned_data['amount_to'] is not None:
+                statuses = statuses.filter(kwota__lte=form_status.cleaned_data['amount_to'])
+
+        return render(request, "panel.html", {
+            "uczniowie": Uczen.objects.all(),
+            "form_status": form_status,
+            "form_student": form_student,
+            "statuses": statuses
+        })
 
 
 def dodaj_ucznia(request):
