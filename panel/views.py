@@ -2,14 +2,13 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .forms import DodanieUcznia, DodanieStatusu, Filter
 from .models import Klasa, Uczen, Czesne, Status
-from django.db.models import Sum
 from .utils import check_login, find_all_tuple
 from django.db.models import Q
-import time
 
 
 def panel(request):
     check_login(request)
+
     students = Uczen.objects.all()
 
     class_ = find_all_tuple(Klasa, ['nazwa'], insert_empty=True)

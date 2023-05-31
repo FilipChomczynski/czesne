@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from celery.schedules import crontab
+try:
+    from panel.tasks import add_status_every_month
+    from panel.models import Settings
+except:
+    pass
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,10 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
+    'django_celery_beat',
 
     'panel',
-    'uzytkownicy'
+    'uzytkownicy',
 ]
 
 MIDDLEWARE = [
@@ -131,5 +138,16 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery settings
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_TIMEZONE = "Poland"
+
+try:
+    CELERY_BEAT_SCHEDULE = {
+        "add_status_every_month": {
+            "task": "panel.tasks.add_status_every_month",
+            "schedule": crontab(0, 0, day_of_month=Settings.objects.first().day_of_adding_statuses),
+        }
+    }
+except:
+    pass

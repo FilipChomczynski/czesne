@@ -28,7 +28,8 @@ class Uczen(models.Model):
 
     def __str__(self):
         return f"{self.imie} {self.nazwisko}"
-    
+
+
 class Status(models.Model):
     tytul = models.CharField(max_length=50)
     uczen = models.ForeignKey(Uczen, on_delete=models.CASCADE)
@@ -37,3 +38,8 @@ class Status(models.Model):
 
     def __str__(self):
         return f"{self.tytul} {self.kwota}"
+
+
+class Settings(models.Model):
+    email = models.EmailField()
+    day_of_adding_statuses = models.CharField(max_length=2)
